@@ -1,6 +1,6 @@
 from sklearn.neural_network import MLPClassifier
 
-from classifier.classifier import Classifier
+from classifiers.classifier import Classifier
 
 class MLP(Classifier):
     def __init__(self, train_data, labels, test_data, test_ids, classes):
