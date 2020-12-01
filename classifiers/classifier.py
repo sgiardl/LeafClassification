@@ -20,9 +20,7 @@ class Classifier:
 
     def split_data(self):
         stratified_split = StratifiedShuffleSplit(n_splits=10, test_size=0.2, random_state=0)
-        
-        print(f'data has been split for {self.name}')
-        
+            
         for index_train, index_valid in stratified_split.split(self.train_data, self.labels):
             X_train, X_valid = self.train_data.values[index_train], self.train_data.values[index_valid]
             y_train, y_valid = self.labels[index_train], self.labels[index_valid]
@@ -30,24 +28,27 @@ class Classifier:
         return X_train, y_train, X_valid, y_valid
 
     def search_hyperparameters(self):
-        grid = GridSearchCV(self.classifier, self.param_grid, scoring='accuracy', n_jobs=-1)
+        grid = GridSearchCV(self.classifier, 
+                            self.param_grid, 
+                            scoring='accuracy', 
+                            n_jobs=-1)
+        
         grid.fit(self.X_train, self.y_train)
 
         self.best_model = grid.best_estimator_
         self.best_score = grid.best_score_
         self.best_params = grid.best_params_
-        print(f'Best parameters found for {self.name} are {self.best_params} for a best score '
-              f'of {self.best_score:.2%}')
+        print(f'{self.name}: Best parameters: {self.best_params} Best score: {self.best_score:.2%}')
         
     def train(self):
         self.best_model.fit(self.X_train, self.y_train)
 
-    def get_train_dataing_accuracy(self):
+    def get_training_accuracy(self):
         return accuracy_score(self.y_train, self.best_model.predict(self.X_train))
 
     def get_validation_accuracy(self):
         return accuracy_score(self.y_valid, self.best_model.predict(self.X_valid))
 
     def display_accuracies(self):
-        print(f'train_dataing accuracy: {self.get_train_dataing_accuracy():.2%}')
+        print(f'Training accuracy: {self.get_training_accuracy():.2%}')
         print(f'Validation accuracy: {self.get_validation_accuracy():.2%}')

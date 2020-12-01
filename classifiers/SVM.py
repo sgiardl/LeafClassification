@@ -1,4 +1,5 @@
 from sklearn.svm import SVC
+
 from classifiers.classifier import Classifier
 
 class SVM(Classifier):

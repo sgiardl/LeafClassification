@@ -15,6 +15,7 @@ from sklearn.preprocessing import LabelEncoder
 
 from classifiers.regression import Regression
 from classifiers.SVM import SVM
+from classifiers.KNN import KNN
 
 if __name__ == '__main__':
     train_data = pd.read_csv('data/train.csv')
@@ -32,6 +33,7 @@ if __name__ == '__main__':
     
     clfs.append(Regression(train_data, labels, test_data, test_ids, classes))
     clfs.append(SVM(train_data, labels, test_data, test_ids, classes))  
+    clfs.append(KNN(train_data, labels, test_data, test_ids, classes))  
  
     for clf in clfs:
         clf.search_hyperparameters()
