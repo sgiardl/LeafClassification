@@ -1,9 +1,12 @@
 from sklearn.neural_network import MLPClassifier
+from warnings import simplefilter
+from sklearn.exceptions import ConvergenceWarning
 
 from classifiers.Classifier import Classifier
 
 class MultiLayerPerceptron(Classifier):
     def __init__(self, train_data, labels, test_data, test_ids, classes):
+        simplefilter("ignore", category=ConvergenceWarning)
         super(MultiLayerPerceptron, self).__init__(train_data, labels, test_data, test_ids, classes)
         self.classifier = MLPClassifier()
         self.param_grid = {'hidden_layer_sizes': [(50,), (80,), (100,)],
