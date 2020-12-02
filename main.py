@@ -42,6 +42,8 @@ if __name__ == '__main__':
     clfs.append(NaiveBayes(train_data, labels, test_data, test_ids, classes))
  
     for clf in clfs:
+        clf.print_name()
         clf.search_hyperparameters()
         clf.train()
-        clf.display_accuracies()
+        clf.print_training_accuracy()
+        clf.print_validation_accuracy()

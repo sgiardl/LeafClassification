@@ -38,7 +38,7 @@ class Classifier:
         self.best_model = grid.best_estimator_
         self.best_score = grid.best_score_
         self.best_params = grid.best_params_
-        print(f'{self.name}: Best parameters: {self.best_params} Best score: {self.best_score:.2%}')
+        print(f'Best parameters: {self.best_params}')
         
     def train(self):
         self.best_model.fit(self.X_train, self.y_train)
@@ -49,6 +49,13 @@ class Classifier:
     def get_validation_accuracy(self):
         return accuracy_score(self.y_valid, self.best_model.predict(self.X_valid))
 
-    def display_accuracies(self):
+    def print_training_accuracy(self):
         print(f'Training accuracy: {self.get_training_accuracy():.2%}')
+        
+    def print_validation_accuracy(self):
         print(f'Validation accuracy: {self.get_validation_accuracy():.2%}')
+
+    def print_name(self):
+        print('=' * 40)
+        print(f'Classifier Name: {self.name}')
+        
