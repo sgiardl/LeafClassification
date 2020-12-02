@@ -13,6 +13,8 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 
+import matplotlib.pyplot as plt
+
 from classifiers.Regression import Regression
 from classifiers.SupportVectorMachine import SupportVectorMachine
 from classifiers.KNearestNeighbors import KNearestNeighbors
@@ -33,6 +35,9 @@ if __name__ == '__main__':
     test_data = test_data.drop(['id'], axis=1)
 
     clfs = []
+    names = []
+    training_acc = []
+    validation_acc = []
     
     clfs.append(Regression(train_data, labels, test_data, test_ids, classes))
     clfs.append(SupportVectorMachine(train_data, labels, test_data, test_ids, classes))  
@@ -47,3 +52,33 @@ if __name__ == '__main__':
         clf.train()
         clf.print_training_accuracy()
         clf.print_validation_accuracy()
+        
+        names.append(clf.name)
+        training_acc.append(clf.get_training_accuracy())
+        validation_acc.append(clf.get_validation_accuracy())
+
+    x = np.arange(len(names))
+    width = 0.35
+    fig, ax = plt.subplots()
+    rects1 = ax.bar(x - width/2, training_acc, width, label='Training')
+    rects2 = ax.bar(x + width/2, validation_acc, width, label='Validation')
+        
+    ax.set_ylabel('Accuracy %')
+    ax.set_title('Training and validation accuracies')
+    ax.set_xticks(x)
+    ax.set_xticklabels(names)
+    ax.legend() 
+    fig.tight_layout()
+    plt.show()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
