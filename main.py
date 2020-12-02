@@ -9,9 +9,7 @@ Simon Giard-Leroux (12095680)
 Pierre-Alexandre Dufrêne (17062312)
 """
 
-import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder
 
 import matplotlib.pyplot as plt
 
@@ -22,20 +20,19 @@ from classifiers.MultiLayerPerceptron import MultiLayerPerceptron
 from classifiers.RandomForest import RandomForest
 from classifiers.NaiveBayes import NaiveBayes
 
+from data.DataHandler import DataHandler
+from utils.Visualization import Visualization
+
 if __name__ == '__main__':
-    train_data = pd.read_csv('data/train.csv')
-
-    data = LabelEncoder().fit(train_data.species)
-    labels = data.transform(train_data.species)
-
-    train_data = train_data.drop(['species', 'id'], axis=1)
-
-    clfs = [Regression(train_data, labels),
-            SupportVectorMachine(train_data, labels),
-            KNearestNeighbors(train_data, labels),
-            MultiLayerPerceptron(train_data, labels),
-            RandomForest(train_data, labels),
-            NaiveBayes(train_data, labels)]
+    data_handler = DataHandler('data/train.csv')
+    X_train, y_train, X_test, y_test = data_handler.get_split_data()
+    
+    clfs = [Regression(X_train, y_train, X_test, y_test),
+            SupportVectorMachine(X_train, y_train, X_test, y_test),
+            KNearestNeighbors(X_train, y_train, X_test, y_test),
+            MultiLayerPerceptron(X_train, y_train, X_test, y_test),
+            RandomForest(X_train, y_train, X_test, y_test),
+            NaiveBayes(X_train, y_train, X_test, y_test)]
  
     names = []
     training_acc = []

@@ -1,29 +1,19 @@
-from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
 
 class Classifier:
-    def __init__(self, train_data, labels):
-        self.train_data = train_data
-        self.labels = labels
-
+    def __init__(self, X_train, y_train, X_test, y_test):
         self.name = type(self).__name__
-
-        self.X_train, self.y_train, self.X_test, self.y_test = self.split_data()
-
+        
+        self.X_train = X_train
+        self.y_train = y_train
+        self.X_test = X_test
+        self.y_test = y_test
+        
         self.best_model = None
         self.best_score = None
         self.best_params = None
-
-    def split_data(self):
-        stratified_split = StratifiedShuffleSplit(n_splits=10, test_size=0.2, random_state=0)
-            
-        for index_train, index_test in stratified_split.split(self.train_data, self.labels):
-            X_train, X_test = self.train_data.values[index_train], self.train_data.values[index_test]
-            y_train, y_test = self.labels[index_train], self.labels[index_test]
-            
-        return X_train, y_train, X_test, y_test
-
+        
     def search_hyperparameters(self):
         grid = GridSearchCV(self.classifier, 
                             self.param_grid, 
