@@ -9,10 +9,6 @@ Simon Giard-Leroux (12095680)
 Pierre-Alexandre Dufrêne (17062312)
 """
 
-import numpy as np
-
-import matplotlib.pyplot as plt
-
 from classifiers.Regression import Regression
 from classifiers.SupportVectorMachine import SupportVectorMachine
 from classifiers.KNearestNeighbors import KNearestNeighbors
@@ -27,7 +23,7 @@ if __name__ == '__main__':
     test_size = 0.2
     valid_size = 0.2
     
-    data_handler = DataHandler(path='data/train.csv', test_size=0.2)
+    data_handler = DataHandler('data/train.csv', test_size)
     X_train, y_train, X_test, y_test = data_handler.get_split_data()
     
     clfs = [Regression(X_train, y_train, X_test, y_test, valid_size),
@@ -39,7 +35,7 @@ if __name__ == '__main__':
  
     names = []
     training_acc = []
-    validation_acc = []
+    testing_acc = []
     
     for clf in clfs:
         clf.print_name()
@@ -50,21 +46,10 @@ if __name__ == '__main__':
         
         names.append(clf.name)
         training_acc.append(clf.get_training_accuracy() * 100)
-        validation_acc.append(clf.get_testing_accuracy() * 100)
+        testing_acc.append(clf.get_testing_accuracy() * 100)
 
-    x = np.arange(len(names))
-    width = 0.35
-    fig, ax = plt.subplots()
-    rects1 = ax.bar(x - width/2, training_acc, width, label='Training')
-    rects2 = ax.bar(x + width/2, validation_acc, width, label='Testing')
-        
-    ax.set_ylabel('Accuracy %')
-    ax.set_title('Training and testing accuracies')
-    ax.set_xticks(x)
-    ax.set_xticklabels(names, rotation='vertical')
-    ax.legend(bbox_to_anchor=(1.05, 1)) 
-    plt.ylim([90, 100])
-    plt.show()
+    chart = Visualization(names, training_acc, testing_acc)
+    chart.display_chart()
     
     
     
