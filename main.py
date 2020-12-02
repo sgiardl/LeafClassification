@@ -9,10 +9,6 @@ Simon Giard-Leroux (12095680)
 Pierre-Alexandre Dufrêne (17062312)
 """
 
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import LabelEncoder
-
 from classifiers.Regression import Regression
 from classifiers.SupportVectorMachine import SupportVectorMachine
 from classifiers.KNearestNeighbors import KNearestNeighbors
@@ -20,28 +16,49 @@ from classifiers.MultiLayerPerceptron import MultiLayerPerceptron
 from classifiers.RandomForest import RandomForest
 from classifiers.NaiveBayes import NaiveBayes
 
+from data.DataHandler import DataHandler
+from utils.Visualization import Visualization
+
 if __name__ == '__main__':
-    train_data = pd.read_csv('data/train.csv')
-    test_data = pd.read_csv('data/test.csv')
-
-    data = LabelEncoder().fit(train_data.species)
-    labels = data.transform(train_data.species)
-    classes = np.array(data.classes_)
-    test_ids = test_data.id
-
-    train_data = train_data.drop(['species', 'id'], axis=1)
-    test_data = test_data.drop(['id'], axis=1)
-
-    clfs = []
+    test_size = 0.2
+    valid_size = 0.2
     
-    clfs.append(Regression(train_data, labels, test_data, test_ids, classes))
-    clfs.append(SupportVectorMachine(train_data, labels, test_data, test_ids, classes))  
-    clfs.append(KNearestNeighbors(train_data, labels, test_data, test_ids, classes))  
-    clfs.append(MultiLayerPerceptron(train_data, labels, test_data, test_ids, classes))  
-    clfs.append(RandomForest(train_data, labels, test_data, test_ids, classes))  
-    clfs.append(NaiveBayes(train_data, labels, test_data, test_ids, classes))
+    data_handler = DataHandler('data/train.csv', test_size)
+    X_train, y_train, X_test, y_test = data_handler.get_split_data()
+    
+    clfs = [Regression(X_train, y_train, X_test, y_test, valid_size),
+            SupportVectorMachine(X_train, y_train, X_test, y_test, valid_size),
+            KNearestNeighbors(X_train, y_train, X_test, y_test, valid_size),
+            MultiLayerPerceptron(X_train, y_train, X_test, y_test, valid_size),
+            RandomForest(X_train, y_train, X_test, y_test, valid_size),
+            NaiveBayes(X_train, y_train, X_test, y_test, valid_size)]
  
+    names = []
+    training_acc = []
+    testing_acc = []
+    
     for clf in clfs:
+        clf.print_name()
         clf.search_hyperparameters()
         clf.train()
-        clf.display_accuracies()
+        clf.print_training_accuracy()
+        clf.print_testing_accuracy()
+        
+        names.append(clf.name)
+        training_acc.append(clf.get_training_accuracy() * 100)
+        testing_acc.append(clf.get_testing_accuracy() * 100)
+
+    chart = Visualization(names, training_acc, testing_acc)
+    chart.display_chart()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
