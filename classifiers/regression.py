@@ -1,6 +1,6 @@
 from sklearn.linear_model import RidgeClassifier
 
-from classifiers.classifier import Classifier
+from classifiers.Classifier import Classifier
 
 class Regression(Classifier):
     def __init__(self, train_data, labels, test_data, test_ids, classes):

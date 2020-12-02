@@ -13,10 +13,11 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 
-from classifiers.regression import Regression
-from classifiers.SVM import SVM
-from classifiers.KNN import KNN
-from classifiers.MLP import MLP
+from classifiers.Regression import Regression
+from classifiers.SupportVectorMachine import SupportVectorMachine
+from classifiers.KNearestNeighbors import KNearestNeighbors
+from classifiers.MultiLayerPerceptron import MultiLayerPerceptron
+from classifiers.RandomForest import RandomForest
 
 if __name__ == '__main__':
     train_data = pd.read_csv('data/train.csv')
@@ -33,9 +34,11 @@ if __name__ == '__main__':
     clfs = []
     
     clfs.append(Regression(train_data, labels, test_data, test_ids, classes))
-    clfs.append(SVM(train_data, labels, test_data, test_ids, classes))  
-    clfs.append(KNN(train_data, labels, test_data, test_ids, classes))  
-    clfs.append(MLP(train_data, labels, test_data, test_ids, classes))  
+    clfs.append(SupportVectorMachine(train_data, labels, test_data, test_ids, classes))  
+    clfs.append(KNearestNeighbors(train_data, labels, test_data, test_ids, classes))  
+    clfs.append(MultiLayerPerceptron(train_data, labels, test_data, test_ids, classes))  
+    clfs.append(RandomForest(train_data, labels, test_data, test_ids, classes))  
+    
  
     for clf in clfs:
         clf.search_hyperparameters()

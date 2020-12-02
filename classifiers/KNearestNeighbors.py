@@ -1,10 +1,10 @@
 from sklearn.neighbors import KNeighborsClassifier
 
-from classifiers.classifier import Classifier
+from classifiers.Classifier import Classifier
 
-class KNN(Classifier):
+class KNearestNeighbors(Classifier):
     def __init__(self, train_data, labels, test_data, test_ids, classes):
-        super(KNN, self).__init__(train_data, labels, test_data, test_ids, classes)
+        super(KNearestNeighbors, self).__init__(train_data, labels, test_data, test_ids, classes)
         self.classifier = KNeighborsClassifier()
         self.param_grid = {'n_neighbors': [1, 2, 3, 4, 5],
                             'weights': ['uniform', 'distance'],
