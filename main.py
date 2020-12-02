@@ -49,21 +49,21 @@ if __name__ == '__main__':
         clf.print_testing_accuracy()
         
         names.append(clf.name)
-        training_acc.append(clf.get_training_accuracy())
-        validation_acc.append(clf.get_testing_accuracy())
+        training_acc.append(clf.get_training_accuracy() * 100)
+        validation_acc.append(clf.get_testing_accuracy() * 100)
 
     x = np.arange(len(names))
     width = 0.35
     fig, ax = plt.subplots()
     rects1 = ax.bar(x - width/2, training_acc, width, label='Training')
-    rects2 = ax.bar(x + width/2, validation_acc, width, label='Validation')
+    rects2 = ax.bar(x + width/2, validation_acc, width, label='Testing')
         
     ax.set_ylabel('Accuracy %')
     ax.set_title('Training and testing accuracies')
     ax.set_xticks(x)
-    ax.set_xticklabels(names)
-    ax.legend() 
-    fig.tight_layout()
+    ax.set_xticklabels(names, rotation='vertical')
+    ax.legend(bbox_to_anchor=(1.05, 1)) 
+    plt.ylim([90, 100])
     plt.show()
     
     
