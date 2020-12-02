@@ -1,18 +1,15 @@
-import numpy as np
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
 
 class Classifier:
-    def __init__(self, train_data, labels, test_data, test_data_ids, classes):
+    def __init__(self, train_data, labels):
         self.train_data = train_data
-        self.test_data = test_data
         self.labels = labels
-        self.test_data_ids = test_data_ids
-        self.classes = np.array(classes)
+
         self.name = type(self).__name__
 
-        self.X_train, self.y_train, self.X_valid, self.y_valid = self.split_data()
+        self.X_train, self.y_train, self.X_test, self.y_test = self.split_data()
 
         self.best_model = None
         self.best_score = None
@@ -21,11 +18,11 @@ class Classifier:
     def split_data(self):
         stratified_split = StratifiedShuffleSplit(n_splits=10, test_size=0.2, random_state=0)
             
-        for index_train, index_valid in stratified_split.split(self.train_data, self.labels):
-            X_train, X_valid = self.train_data.values[index_train], self.train_data.values[index_valid]
-            y_train, y_valid = self.labels[index_train], self.labels[index_valid]
+        for index_train, index_test in stratified_split.split(self.train_data, self.labels):
+            X_train, X_test = self.train_data.values[index_train], self.train_data.values[index_test]
+            y_train, y_test = self.labels[index_train], self.labels[index_test]
             
-        return X_train, y_train, X_valid, y_valid
+        return X_train, y_train, X_test, y_test
 
     def search_hyperparameters(self):
         grid = GridSearchCV(self.classifier, 
@@ -46,14 +43,14 @@ class Classifier:
     def get_training_accuracy(self):
         return accuracy_score(self.y_train, self.best_model.predict(self.X_train))
 
-    def get_validation_accuracy(self):
-        return accuracy_score(self.y_valid, self.best_model.predict(self.X_valid))
+    def get_testing_accuracy(self):
+        return accuracy_score(self.y_test, self.best_model.predict(self.X_test))
 
     def print_training_accuracy(self):
         print(f'Training accuracy: {self.get_training_accuracy():.2%}')
         
-    def print_validation_accuracy(self):
-        print(f'Validation accuracy: {self.get_validation_accuracy():.2%}')
+    def print_testing_accuracy(self):
+        print(f'Testing accuracy: {self.get_testing_accuracy():.2%}')
 
     def print_name(self):
         print('=' * 40)
