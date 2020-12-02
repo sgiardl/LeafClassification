@@ -24,15 +24,18 @@ from data.DataHandler import DataHandler
 from utils.Visualization import Visualization
 
 if __name__ == '__main__':
-    data_handler = DataHandler('data/train.csv')
+    test_size = 0.2
+    valid_size = 0.2
+    
+    data_handler = DataHandler(path='data/train.csv', test_size=0.2)
     X_train, y_train, X_test, y_test = data_handler.get_split_data()
     
-    clfs = [Regression(X_train, y_train, X_test, y_test),
-            SupportVectorMachine(X_train, y_train, X_test, y_test),
-            KNearestNeighbors(X_train, y_train, X_test, y_test),
-            MultiLayerPerceptron(X_train, y_train, X_test, y_test),
-            RandomForest(X_train, y_train, X_test, y_test),
-            NaiveBayes(X_train, y_train, X_test, y_test)]
+    clfs = [Regression(X_train, y_train, X_test, y_test, valid_size),
+            SupportVectorMachine(X_train, y_train, X_test, y_test, valid_size),
+            KNearestNeighbors(X_train, y_train, X_test, y_test, valid_size),
+            MultiLayerPerceptron(X_train, y_train, X_test, y_test, valid_size),
+            RandomForest(X_train, y_train, X_test, y_test, valid_size),
+            NaiveBayes(X_train, y_train, X_test, y_test, valid_size)]
  
     names = []
     training_acc = []

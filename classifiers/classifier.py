@@ -2,13 +2,15 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
 
 class Classifier:
-    def __init__(self, X_train, y_train, X_test, y_test):
+    def __init__(self, X_train, y_train, X_test, y_test, valid_size):
         self.name = type(self).__name__
         
         self.X_train = X_train
         self.y_train = y_train
         self.X_test = X_test
         self.y_test = y_test
+        
+        self.valid_size = valid_size
         
         self.best_model = None
         self.best_score = None
@@ -18,7 +20,8 @@ class Classifier:
         grid = GridSearchCV(self.classifier, 
                             self.param_grid, 
                             scoring='accuracy', 
-                            n_jobs=-1)
+                            n_jobs=-1,
+                            cv=int(1 / self.valid_size))
         
         grid.fit(self.X_train, self.y_train)
 
