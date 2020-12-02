@@ -18,6 +18,7 @@ from classifiers.SupportVectorMachine import SupportVectorMachine
 from classifiers.KNearestNeighbors import KNearestNeighbors
 from classifiers.MultiLayerPerceptron import MultiLayerPerceptron
 from classifiers.RandomForest import RandomForest
+from classifiers.NaiveBayes import NaiveBayes
 
 if __name__ == '__main__':
     train_data = pd.read_csv('data/train.csv')
@@ -38,7 +39,7 @@ if __name__ == '__main__':
     clfs.append(KNearestNeighbors(train_data, labels, test_data, test_ids, classes))  
     clfs.append(MultiLayerPerceptron(train_data, labels, test_data, test_ids, classes))  
     clfs.append(RandomForest(train_data, labels, test_data, test_ids, classes))  
-    
+    clfs.append(NaiveBayes(train_data, labels, test_data, test_ids, classes))
  
     for clf in clfs:
         clf.search_hyperparameters()
