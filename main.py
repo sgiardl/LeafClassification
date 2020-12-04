@@ -22,8 +22,9 @@ from utils.Visualization import Visualization
 if __name__ == '__main__':
     test_size = 0.2
     valid_size = 0.2
+    merge_genera = True
     
-    data_handler = DataHandler('data/train.csv', test_size)
+    data_handler = DataHandler('data/train.csv', test_size, merge_genera)
     X_train, y_train, X_test, y_test = data_handler.get_split_data()
     
     clfs = [Regression(X_train, y_train, X_test, y_test, valid_size),

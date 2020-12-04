@@ -3,15 +3,23 @@ from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.preprocessing import LabelEncoder
 
 class DataHandler:
-    def __init__(self, path, test_size):   
+    def __init__(self, path, test_size, merge_genera):   
+        self.test_size = test_size        
         train_data = pd.read_csv(path)
-        self.train_data = train_data.drop(['species', 'id'], axis=1)
         
-        self.test_size = test_size
-        
-        data = LabelEncoder().fit(train_data.species)
-        self.labels = data.transform(train_data.species) 
-        
+        if merge_genera:
+            train_data['genera'] = train_data['species'].str.split('_').str[0]
+
+            data = LabelEncoder().fit(train_data.genera)
+            self.labels = data.transform(train_data.genera) 
+            
+            self.train_data = train_data.drop(['species', 'id', 'genera'], axis=1)                      
+        else:
+            data = LabelEncoder().fit(train_data.species)
+            self.labels = data.transform(train_data.species) 
+            
+            self.train_data = train_data.drop(['species', 'id'], axis=1)
+            
     def get_split_data(self):
         stratified_split = StratifiedShuffleSplit(n_splits=1, test_size=self.test_size, random_state=0)
             

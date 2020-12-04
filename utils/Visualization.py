@@ -25,8 +25,8 @@ class Visualization:
         ax.set_xticks(x)
         ax.set_xticklabels(self.names, rotation='vertical')
         ax.legend(bbox_to_anchor=(1.05, 1)) 
-        plt.ylim([min(self.training_acc + self.validation_acc) - 1, 
-                  max(self.training_acc + self.validation_acc)])
+        plt.ylim([min(self.training_acc + self.testing_acc) - 1, 
+                  max(self.training_acc + self.testing_acc)])
         plt.grid(axis='y', linestyle='--')
         plt.tight_layout()
         plt.show()        
