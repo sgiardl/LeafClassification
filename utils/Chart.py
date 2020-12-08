@@ -1,12 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-class Visualization:
-    def __init__(self, names, training_acc, testing_acc):
+class Chart:
+    def __init__(self, names, training_acc, testing_acc, title):
         self.names = names
         self.training_acc = training_acc
         self.testing_acc = testing_acc
         self.width = 0.35
+        self.title = title
         
     def display_chart(self):
         x = np.arange(len(self.names))
@@ -29,4 +30,5 @@ class Visualization:
                   max(self.training_acc + self.testing_acc)])
         plt.grid(axis='y', linestyle='--')
         plt.tight_layout()
+        plt.title(self.title)
         plt.show()        
