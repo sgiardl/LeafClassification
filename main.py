@@ -21,17 +21,20 @@ from utils.TSNE import t_SNE
 
 if __name__ == '__main__':
     test_size = 0.2
-    valid_size = 0.2
-    merge_genera = True
+    valid_size = 0.2 # of 1 - test_size
     
-    data_handler = DataHandler('data/train.csv', merge_genera)
-    X, y = data_handler.get_full_data()
+    data_handler = DataHandler('data/train.csv')
+    X = data_handler.X
+    y = data_handler.get_y(data_handler.train_data.species)
     
     t_SNE = t_SNE(X, y)
-    y_t_SNE = t_SNE.display_TSNE()    
+    t_SNE.display_TSNE()    
+    y_t_SNE = t_SNE.y
     
-    y_list = [y, y_t_SNE]
-    title_list = ['No Grouping', 'Grouping with TSNE']
+    y_genera = data_handler.get_y(data_handler.train_data.genera)
+    
+    y_list = [y, y_t_SNE, y_genera]
+    title_list = ['No Grouping', 'Grouping with TSNE', 'Grouping by Genera']
     
     for i in range(len(y_list)):
         X_train, y_train, X_test, y_test = data_handler.get_split_data(X, y_list[i], test_size)
