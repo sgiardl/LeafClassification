@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-class Chart:
+class AccuracyChart:
     def __init__(self, names, training_acc, testing_acc, title):
         self.names = names
         self.training_acc = training_acc

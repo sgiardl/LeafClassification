@@ -16,7 +16,8 @@ from classifiers.RandomForest import RandomForest
 from classifiers.NaiveBayes import NaiveBayes
 
 from data.DataHandler import DataHandler
-from utils.Chart import Chart
+from utils.AccuracyChart import AccuracyChart
+from utils.FeatureChart import FeatureChart
 from utils.TSNE import t_SNE
 
 if __name__ == '__main__':
@@ -24,20 +25,32 @@ if __name__ == '__main__':
     valid_size = 0.2 # of 1 - test_size
     
     data_handler = DataHandler('data/train.csv')
+    
+    feature_chart = FeatureChart(data_handler.data)
+    feature_chart.display_chart()
+    
     X = data_handler.X
-    y = data_handler.get_y(data_handler.train_data.species)
+    y = data_handler.get_y(data_handler.data.species)
+    y_genera = data_handler.get_y(data_handler.data.genera)
     
     t_SNE = t_SNE(X, y)
     t_SNE.display_TSNE()    
     y_t_SNE = t_SNE.y
     
-    y_genera = data_handler.get_y(data_handler.train_data.genera)
+    y_list = [y, y, y, y_genera, y_t_SNE]
+    norm_list = ['none', 'mean', 'min-max', 'none', 'none']
+    title_list = ['Original Data', 
+                  'X : Normalized Data (mean)',
+                  'X : Normalized Data (min-max)',
+                  'y : Grouping Classes by Genera', 
+                  'y : Grouping Classes with TSNE']
     
-    y_list = [y, y_t_SNE, y_genera]
-    title_list = ['No Grouping', 'Grouping with TSNE', 'Grouping by Genera']
     
     for i in range(len(y_list)):
-        X_train, y_train, X_test, y_test = data_handler.get_split_data(X, y_list[i], test_size)
+        X_train, y_train, X_test, y_test = data_handler.get_split_data(X, 
+                                                                       y_list[i], 
+                                                                       test_size, 
+                                                                       norm_list[i])
     
         clfs = [LogisticRegression(X_train, y_train, X_test, y_test, valid_size),
                 SupportVectorMachine(X_train, y_train, X_test, y_test, valid_size),
@@ -61,8 +74,8 @@ if __name__ == '__main__':
             training_acc.append(clf.get_training_accuracy() * 100)
             testing_acc.append(clf.get_testing_accuracy() * 100)
     
-        chart = Chart(names, training_acc, testing_acc, title_list[i])
-        chart.display_chart()
+        accuracy_chart = AccuracyChart(names, training_acc, testing_acc, title_list[i])
+        accuracy_chart.display_chart()
     
     
     
