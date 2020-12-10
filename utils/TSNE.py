@@ -45,7 +45,7 @@ class t_SNE:
     
         df = df.sort_index()
         
-        return df['colors']
+        self.y = df['colors']
         
     def display_TSNE_chart(self, df, symbols, title):
         plt.figure()
@@ -61,12 +61,7 @@ class t_SNE:
         plt.title(title)
         plt.show()    
         
-        
-        
-        
-        
-        
-        
+
         
         
         

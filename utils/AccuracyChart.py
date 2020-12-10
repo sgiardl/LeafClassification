@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-class Chart:
+class AccuracyChart:
     def __init__(self, names, training_acc, testing_acc, title):
         self.names = names
         self.training_acc = training_acc
@@ -25,7 +25,7 @@ class Chart:
         ax.set_title('Training and testing accuracies')
         ax.set_xticks(x)
         ax.set_xticklabels(self.names, rotation='vertical')
-        ax.legend(bbox_to_anchor=(1.05, 1)) 
+        ax.legend()
         plt.ylim([min(self.training_acc + self.testing_acc) - 1, 
                   max(self.training_acc + self.testing_acc)])
         plt.grid(axis='y', linestyle='--')
