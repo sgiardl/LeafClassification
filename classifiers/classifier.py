@@ -6,7 +6,6 @@ class Classifier:
         self.name = type(self).__name__
         
         self.best_model = None
-        self.best_score = None
         self.best_params = None
         
     def search_hyperparameters(self, X_train, y_train, valid_size):
@@ -19,7 +18,6 @@ class Classifier:
         grid.fit(X_train, y_train)
 
         self.best_model = grid.best_estimator_
-        self.best_score = grid.best_score_
         self.best_params = grid.best_params_
         print(f'Best parameters: {self.best_params}')
         

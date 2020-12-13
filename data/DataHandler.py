@@ -33,35 +33,35 @@ class DataHandler:
             test_size = len(X_test)
             
             if norm == 'min-max':
-                min_norm_train = self.make_array(X_train.min(axis=0), train_size)
-                max_norm_train = self.make_array(X_train.max(axis=0), train_size)            
-                min_norm_test = self.make_array(X_train.min(axis=0), test_size)
-                max_norm_test = self.make_array(X_train.max(axis=0), test_size)          
+                min_norm_train = self.__make_array(X_train.min(axis=0), train_size)
+                max_norm_train = self.__make_array(X_train.max(axis=0), train_size)            
+                min_norm_test = self.__make_array(X_train.min(axis=0), test_size)
+                max_norm_test = self.__make_array(X_train.max(axis=0), test_size)          
                 
-                X_train = self.normalize_min_max(X_train, min_norm_train, max_norm_train)
-                X_test = self.normalize_min_max(X_test, min_norm_test, max_norm_test)
+                X_train = self.__normalize_min_max(X_train, min_norm_train, max_norm_train)
+                X_test = self.__normalize_min_max(X_test, min_norm_test, max_norm_test)
                 
             elif norm == 'mean':
-                mean_norm_train = self.make_array(X_train.mean(axis=0), train_size)
-                std_norm_train = self.make_array(X_train.std(axis=0), train_size)          
-                mean_norm_test = self.make_array(X_train.mean(axis=0), test_size)
-                std_norm_test = self.make_array(X_train.std(axis=0), test_size)  
+                mean_norm_train = self.__make_array(X_train.mean(axis=0), train_size)
+                std_norm_train = self.__make_array(X_train.std(axis=0), train_size)          
+                mean_norm_test = self.__make_array(X_train.mean(axis=0), test_size)
+                std_norm_test = self.__make_array(X_train.std(axis=0), test_size)  
                 
-                X_train = self.normalize_mean(X_train, mean_norm_train, std_norm_train)
-                X_test = self.normalize_mean(X_test, mean_norm_test, std_norm_test)            
+                X_train = self.__normalize_mean(X_train, mean_norm_train, std_norm_train)
+                X_test = self.__normalize_mean(X_test, mean_norm_test, std_norm_test)            
             
             self.X_train_list.append(X_train)
             self.X_test_list.append(X_test)
             self.y_train_list.append(y_train)
             self.y_test_list.append(y_test)
     
-    def make_array(self, X, size):
+    def __make_array(self, X, size):
         return np.array([X] * size)
     
-    def normalize_min_max(self, X, X_min, X_max):
+    def __normalize_min_max(self, X, X_min, X_max):
         return (X - X_min) / (X_max - X_min)
 
-    def normalize_mean(self, X, X_mean, X_std):
+    def __normalize_mean(self, X, X_mean, X_std):
         return (X - X_mean) / X_std
     
 

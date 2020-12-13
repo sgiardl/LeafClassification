@@ -20,7 +20,15 @@ from utils.AccuracyChart import AccuracyChart
 from utils.FeatureChart import FeatureChart
 from utils.TSNE import t_SNE
 
+import warnings
+import sys
+import os
+
 if __name__ == '__main__':
+    if not sys.warnoptions:
+        warnings.simplefilter("ignore")
+        os.environ["PYTHONWARNINGS"] = "ignore" 
+        
     test_size = 0.2
     valid_size = 0.2 # of 1 - test_size
     
@@ -103,9 +111,9 @@ if __name__ == '__main__':
         accuracy_chart = AccuracyChart(names, training_acc, testing_acc, title_list[i])
         accuracy_chart.display_chart()
 
-    
-    
-    
-    
+
+
+
+
     
     

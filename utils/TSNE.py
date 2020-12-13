@@ -19,7 +19,7 @@ class t_SNE:
         
         symbols = ['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd', 'P', 'X']
       
-        self.display_TSNE_chart(df, symbols, 'TSNE - No Grouping')
+        self.__display_TSNE_chart(df, symbols, 'TSNE - No Grouping')
 
         tsne_groups = [[57,17,44],[62,66,27,97,77],[89,91,18,60],[13,95,11,14],
                        [88,7,26,58],[16,8,1],[93,12,41,48],[49,75],
@@ -41,13 +41,13 @@ class t_SNE:
             
         df = df.replace({'colors':tsne_groups_dict})
 
-        self.display_TSNE_chart(df, symbols, 'TSNE - With Grouping')
+        self.__display_TSNE_chart(df, symbols, 'TSNE - With Grouping')
     
         df = df.sort_index()
         
         self.y = df['colors']
         
-    def display_TSNE_chart(self, df, symbols, title):
+    def __display_TSNE_chart(self, df, symbols, title):
         plt.figure()
         
         cmap = plt.cm.Spectral
