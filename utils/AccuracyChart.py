@@ -21,7 +21,7 @@ class AccuracyChart:
                self.width, 
                label='Testing')
             
-        ax.set_ylabel('Accuracy %')
+        ax.set_ylabel('Mean Accuracy %')
         ax.set_title('Training and testing accuracies')
         ax.set_xticks(x)
         ax.set_xticklabels(self.names, rotation='vertical')
