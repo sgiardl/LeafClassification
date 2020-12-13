@@ -23,7 +23,6 @@ from utils.TSNE import t_SNE
 if __name__ == '__main__':
     test_size = 0.2
     valid_size = 0.2 # of 1 - test_size
-    n_splits = 2
     
     data_handler = DataHandler('data/train.csv')
     
@@ -40,26 +39,22 @@ if __name__ == '__main__':
     
     y_list = [y, y, y, y_genera, y_t_SNE]
     norm_list = ['none', 'mean', 'min-max', 'none', 'none']
-    title_list = ['Original Data', 
-                  'X : Normalized Data (mean)',
-                  'X : Normalized Data (min-max)',
-                  'y : Grouping Classes by Genera', 
-                  'y : Grouping Classes with TSNE']
-    
+    title_list = ['Method 1 : Original Data', 
+                  'Method 2 : X : Normalized Data (mean)',
+                  'Method 3 : X : Normalized Data (min-max)',
+                  'Method 4 : y : Grouping Classes by Genera', 
+                  'Method 5 : y : Grouping Classes with TSNE']
     
     for i in range(len(y_list)):
         print('=' * 40)
         print('=' * 40)
-        print(f'Method {i + 1} : {title_list[i]}')        
+        print(f'{title_list[i]}')        
         print('=' * 40)
         print('=' * 40)
         
-        X_train_list, y_train_list, \
-        X_test_list, y_test_list = data_handler.get_split_data(X, 
-                                                               y_list[i], 
-                                                               test_size, 
-                                                               norm_list[i],
-                                                               n_splits)
+        data_handler.split_data(X, y_list[i], test_size, norm_list[i])
+        
+        n_splits = data_handler.n_splits
         
         clfs = [Ridge(),
                 SupportVectorMachine(),
@@ -81,10 +76,10 @@ if __name__ == '__main__':
             for j in range(n_splits):
                 print(f'Split {j + 1} :')
                 
-                X_train = X_train_list[j]
-                y_train = y_train_list[j]
-                X_test = X_test_list[j]
-                y_test = y_test_list[j]
+                X_train = data_handler.X_train_list[j]
+                y_train = data_handler.y_train_list[j]
+                X_test = data_handler.X_test_list[j]
+                y_test = data_handler.y_test_list[j]
                 
                 clf.search_hyperparameters(X_train, y_train, valid_size)
                 clf.train(X_train, y_train)

@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
 
 class DataHandler:
@@ -12,14 +12,18 @@ class DataHandler:
     def get_y(self, label_col):
         return LabelEncoder().fit(label_col).transform(label_col) 
     
-    def get_split_data(self, X, y, test_size, norm, n_splits):
-        stratified_split = StratifiedShuffleSplit(n_splits=n_splits, 
-                                                  test_size=test_size, 
-                                                  random_state=0)
-        X_train_list = []
-        X_test_list = []
-        y_train_list = []
-        y_test_list = []
+    def split_data(self, X, y, test_size, norm):
+        n_splits = int(1 / test_size)
+        self.n_splits = n_splits
+        
+        stratified_split = StratifiedKFold(n_splits=n_splits,
+                                           shuffle=True,
+                                           random_state=0)
+  
+        self.X_train_list = []
+        self.X_test_list = []
+        self.y_train_list = []
+        self.y_test_list = []
         
         for index_train, index_test in stratified_split.split(X, y):
             X_train, X_test = X.values[index_train], X.values[index_test]
@@ -46,12 +50,10 @@ class DataHandler:
                 X_train = self.normalize_mean(X_train, mean_norm_train, std_norm_train)
                 X_test = self.normalize_mean(X_test, mean_norm_test, std_norm_test)            
             
-            X_train_list.append(X_train)
-            X_test_list.append(X_test)
-            y_train_list.append(y_train)
-            y_test_list.append(y_test)
-            
-        return X_train_list, y_train_list, X_test_list, y_test_list
+            self.X_train_list.append(X_train)
+            self.X_test_list.append(X_test)
+            self.y_train_list.append(y_train)
+            self.y_test_list.append(y_test)
     
     def make_array(self, X, size):
         return np.array([X] * size)
