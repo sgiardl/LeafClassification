@@ -4,4 +4,6 @@ class FeatureChart:
         self.data_mean = data.groupby('species').mean().T
         
     def display_chart(self):
-        self.data_mean.plot()
+        ax = self.data_mean.plot(legend=False, title='Feature Values')
+        ax.set_xlabel('Features')
+        ax.set_ylabel('Values')
