@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['main.py', 'utils\\Visualization.py', 'data\\DataHandler.py', 'classifiers\\Classifier.py']
+recent_files = ['main.py', 'data\\DataHandler.py', 'classifiers\\Classifier.py', 'classifiers\\Ridge.py', 'utils\\AccuracyChart.py', 'classifiers\\SupportVectorMachine.py']
 
