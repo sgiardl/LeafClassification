@@ -58,10 +58,9 @@ if __name__ == '__main__':
         print(f'{title_list[i]}')        
         print('=' * 40)
         print('=' * 40)
-        data_handler.split
         
         data_handler.split_data(X, y_list[i], test_size, norm_list[i])
-        
+
         n_splits = data_handler.n_splits
 
         names = []
@@ -87,8 +86,8 @@ if __name__ == '__main__':
                 clf.print_training_accuracy(X_train, y_train)
                 clf.print_testing_accuracy(X_test, y_test)
                 
-                clf_training_acc.append(clf.get_training_accuracy(X_train, y_train))
-                clf_testing_acc.append(clf.get_testing_accuracy(X_test, y_test))
+                clf_training_acc.append(clf.get_accuracy(X_train, y_train))
+                clf_testing_acc.append(clf.get_accuracy(X_test, y_test))
             
             names.append(clf.name)
             
