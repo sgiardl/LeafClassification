@@ -24,8 +24,14 @@ class FeatureChart:
             species.
         
         """
-        
+        # Remove the 'id' and 'genera' columns from the data
+        # pandas dataframe        
         data = data.drop(['id', 'genera'], axis=1)
+        
+        # Calculate the mean feature values for each species
+        # and transpose the data so the features are on the X
+        # axis and the y axis shows the mean value for each
+        # species
         self.data_mean = data.groupby('species').mean().T
         
     def display_chart(self):
@@ -41,6 +47,12 @@ class FeatureChart:
             for each feature.   
         """
         
+        # Display the features chart, specify that
+        # to remove the legend and add a title
         ax = self.data_mean.plot(legend=False, title='Feature Values')
+        
+        # Set the X axis label to 'Features'
         ax.set_xlabel('Features')
+        
+        # Set the y axis label to 'Values'
         ax.set_ylabel('Values')

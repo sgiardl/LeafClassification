@@ -22,7 +22,7 @@ class Classifier:
             as its self.name attribute and self.best_model and self.best_params
             as empty attributes.
         """
-        
+
         self.name = type(self).__name__
         
         self.best_model = None
@@ -46,6 +46,9 @@ class Classifier:
             in the self.best_params attribute.        
         """
         
+        # Perform a grid search cross-validation
+        # to find the best combination of
+        # hyper-parameters
         grid = GridSearchCV(self.classifier, 
                             self.param_grid, 
                             scoring='accuracy', 
@@ -54,8 +57,11 @@ class Classifier:
         
         grid.fit(X_train, y_train)
 
+        # Save the best model and best parameters
         self.best_model = grid.best_estimator_
         self.best_params = grid.best_params_
+        
+        # Display the best parameters
         print(f'Best parameters: {self.best_params}')
         
     def train(self, X_train, y_train):
@@ -73,6 +79,7 @@ class Classifier:
             specified in the parameters.
         """
         
+        # Train the best model
         self.best_model.fit(X_train, y_train)
 
     def get_accuracy(self, X, y):
@@ -90,6 +97,7 @@ class Classifier:
             the ground truth labels.
         """
         
+        # Calculate accuracy score
         return 100 * accuracy_score(y, self.best_model.predict(X))
 
     def print_training_accuracy(self, X_train, y_train):
@@ -105,6 +113,7 @@ class Classifier:
             This method prints the training accuracy.
         """
         
+        # Display training accuracy score
         print(f'Training accuracy: {self.get_accuracy(X_train, y_train):.2f}%')
         
     def print_testing_accuracy(self, X_test, y_test):
@@ -120,6 +129,7 @@ class Classifier:
             This method prints the testing accuracy.
         """
         
+        # Display testing accuracy score
         print(f'Testing accuracy: {self.get_accuracy(X_test, y_test):.2f}%')
 
     def print_name(self):
@@ -134,5 +144,6 @@ class Classifier:
             This method prints the classifier name.        
         """
         
+        # Display classifier name
         print('=' * 40)
         print(f'Classifier Name: {self.name}\n')
