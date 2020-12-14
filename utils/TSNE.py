@@ -3,11 +3,44 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 class t_SNE:
+    """
+    CLASS NAME:
+        t_SNE
+        
+    DESCRIPTION:
+        This class is used to generate a t-distributed stochastic 
+        neighbor embedding (t-SNE) chart to show the class similarity
+        for all features in a 2D chart.
+    """
     def __init__(self, X, y):
+        """
+        PARAMETERS:
+            X : features data, 2D numpy array
+            y : labels, 1D numpy array
+        RETURNS:
+            None.
+            
+        DESCRIPTION:
+            Saves the arguments as member attributes
+            of the class self.X and self.y.
+        """
+        
         self.X = X
         self.y = y
         
     def display_TSNE(self):
+        """
+        PARAMETERS:
+            None.
+            
+        RETURNS:
+            None.
+            
+        DESCRIPTION:
+            This method displays the t-SNE chart with
+            and without class grouping.
+        """
+        
         tsne = TSNE(init='pca')
         output = tsne.fit_transform(self.X, self.y)
 
@@ -48,6 +81,24 @@ class t_SNE:
         self.y = df['colors']
         
     def __display_TSNE_chart(self, df, symbols, title):
+        """
+        PARAMETERS:
+            df : pandas dataframe containing the results of the
+                 t-SNE algorithms and color values in 3 columns :
+                 'x', 'y' and 'colors'
+            symbols : list of symbols to use for the t-SNE chart, 
+                      list of strings
+            title : title for the t-SNE chart, string
+                
+        RETURNS:
+            None.
+            
+        DESCRIPTION:
+            This private method is a sub-method called twice
+            in the display_TSNE() method. It generates a t-SNE
+            chart for the data contained in the df argument.
+        """
+        
         plt.figure()
         
         cmap = plt.cm.Spectral
@@ -60,12 +111,3 @@ class t_SNE:
         plt.legend(ncol=4)
         plt.title(title)
         plt.show()    
-        
-
-        
-        
-        
-        
-        
-        
-        

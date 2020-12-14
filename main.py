@@ -20,15 +20,7 @@ from utils.AccuracyChart import AccuracyChart
 from utils.FeatureChart import FeatureChart
 from utils.TSNE import t_SNE
 
-import warnings
-import sys
-import os
-
-if __name__ == '__main__':
-    if not sys.warnoptions:
-        warnings.simplefilter("ignore")
-        os.environ["PYTHONWARNINGS"] = "ignore" 
-        
+if __name__ == '__main__':      
     test_size = 0.2
     valid_size = 0.2 # of 1 - test_size
     
@@ -53,24 +45,25 @@ if __name__ == '__main__':
                   'Method 4 : y : Grouping Classes by Genera', 
                   'Method 5 : y : Grouping Classes with TSNE']
     
+    clfs = [Ridge(),
+            SupportVectorMachine(),
+            KNearestNeighbors(),
+            MultiLayerPerceptron(),
+            RandomForest(),
+            NaiveBayes()]    
+    
     for i in range(len(y_list)):
         print('=' * 40)
         print('=' * 40)
         print(f'{title_list[i]}')        
         print('=' * 40)
         print('=' * 40)
+        data_handler.split
         
         data_handler.split_data(X, y_list[i], test_size, norm_list[i])
         
         n_splits = data_handler.n_splits
-        
-        clfs = [Ridge(),
-                SupportVectorMachine(),
-                KNearestNeighbors(),
-                MultiLayerPerceptron(),
-                RandomForest(),
-                NaiveBayes()]
-     
+
         names = []
         training_acc = []
         testing_acc = []
@@ -110,10 +103,3 @@ if __name__ == '__main__':
     
         accuracy_chart = AccuracyChart(names, training_acc, testing_acc, title_list[i])
         accuracy_chart.display_chart()
-
-
-
-
-
-    
-    
