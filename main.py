@@ -18,7 +18,7 @@ import os
 if __name__ == '__main__':
     # Disable scikitlearn warnings for ConvergenceWarning
     # for multi-layer perceptron
-    # (cannot be disabled any either way)
+    # (cannot be disabled any other way)
     if not sys.warnoptions:
         warnings.simplefilter("ignore")
         os.environ["PYTHONWARNINGS"] = "ignore"  
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     y = data_handler.get_y(data_handler.data.species)
     
     if search_hyperparam_range:
-        # Display that hyperparameter range search is being performed
+        # Display that the hyperparameter range search is being performed
         print('=' * 40)
         print('Hyperparameter Range Search')
         print('=' * 40)

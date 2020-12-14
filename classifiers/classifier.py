@@ -1,7 +1,6 @@
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
-import numpy as np
 
 class Classifier:
     """
