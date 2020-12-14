@@ -28,7 +28,7 @@ class SupportVectorMachine(Classifier):
         
         super(SupportVectorMachine, self).__init__()
         self.classifier = SVC(class_weight='balanced')
-        self.param_grid = {'C': [1e3, 5e3, 1e4, 5e4, 1e5],
-                            'gamma': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.1],
+        self.param_grid = {'C': [1e2, 1e3, 1e4, 1e5, 1e6],
+                            'gamma': [2e-12, 2e-9, 3e-5, 0.1, 20],
                             'kernel': ['linear', 'poly', 'rbf', 'sigmoid']
                            }

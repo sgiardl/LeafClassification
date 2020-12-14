@@ -1,5 +1,7 @@
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+import numpy as np
 
 class Classifier:
     """
@@ -27,6 +29,99 @@ class Classifier:
         
         self.best_model = None
         self.best_params = None
+    
+    def search_hyperparameters_range(self, X_train, y_train, 
+                                     valid_size, param, param_grid, scale,
+                                     param_grid_chosen):
+        """
+        PARAMETERS:
+            X_train : features, 2D numpy array
+            y_train : labels, 1D numpy array
+            valid_size : size of validation set as floating point value (ex. 0.2 for 20%)
+            param : name of the parameter being tested, string
+            param_grid : dictionary of {param : list of values to test} 
+            scale : scale for chart X axis, either 'log' or 'linear'
+            param_grid_chosen : dictionary of {param : list of values chosen} 
+            
+        RETURNS:
+            None.
+            
+        DESCRIPTION:
+            This method uses a grid search cross-validation method
+            to find the classifier accuracy based on a specific hyperparameter
+            over a range of values and generates a chart
+            showing the accuracy obtained over the range
+            of input values for this parameter.
+        """
+        
+        # Display which classifier and which parameter is being tested
+        print(f'Finding hyperparameter range for classifier : {self.name}')
+        print(f'and parameter : {param}\n')
+        
+        # Calculate number of cross-validations to perform
+        cv = int(1 / valid_size)
+        
+        # Perform a grid search cross-validation
+        # for the full range of parameter values
+        grid = GridSearchCV(self.classifier, 
+                            param_grid, 
+                            scoring='accuracy', 
+                            n_jobs=-1,
+                            cv=cv,
+                            return_train_score=True)
+        
+        grid.fit(X_train, y_train)
+
+        # Get the parameter values, test and train scores
+        param_values = [d[param] for d in grid.cv_results_['params']]
+        mean_test_scores = 100 * grid.cv_results_['mean_test_score']
+        mean_train_scores = 100 * grid.cv_results_['mean_train_score']
+
+        # Perform a grid search cross-validation
+        # for the chosen range of parameter values
+        grid_chosen = GridSearchCV(self.classifier, 
+                                    param_grid_chosen, 
+                                    scoring='accuracy', 
+                                    n_jobs=-1,
+                                    cv=cv,
+                                    return_train_score=True)
+                
+        grid_chosen.fit(X_train, y_train)
+        
+        # Get the parameter values, test and train scores
+        param_values_chosen = [d[param] for d in grid_chosen.cv_results_['params']]
+        mean_test_scores_chosen = 100 * grid_chosen.cv_results_['mean_test_score']
+               
+        # Declare chart
+        fig, ax = plt.subplots()
+        
+        # Plot lines for full train, full test and scatter for chosen test
+        plt.plot(param_values, mean_train_scores, c='blue')        
+        plt.plot(param_values, mean_test_scores, c='green')
+        plt.scatter(param_values_chosen, mean_test_scores_chosen, 
+                    marker='x', c='red')
+        
+        # Show grid lines
+        plt.grid(linestyle='--')
+        
+        # Set scale as 'linear' or 'log'
+        ax.set_xscale(scale)
+        
+        # Show legend
+        plt.legend(['Training Accuracy', 'Testing Accuracy',
+                    'Values chosen'])
+
+        # Set chart y label
+        ax.set_ylabel('Mean Accuracy %')
+        
+        # Set chart x label
+        ax.set_xlabel(param)
+        
+        # Set chart title
+        plt.title(f'{self.name} Hyperparameter Range Search')
+        
+        # Show chart
+        plt.show()    
         
     def search_hyperparameters(self, X_train, y_train, valid_size):
         """

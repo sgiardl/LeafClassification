@@ -28,6 +28,6 @@ class RandomForest(Classifier):
         
         super(RandomForest, self).__init__()
         self.classifier = RandomForestClassifier(n_jobs=-1)
-        self.param_grid = {'n_estimators': [350, 400, 450],
+        self.param_grid = {'n_estimators': [200, 350, 450],
                             'max_depth': [20, 25, 30, 35]
                            }

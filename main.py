@@ -1,14 +1,3 @@
-"""
-IFT712 : Techniques d'apprentissage
-
-Automne 2020
-
-Projet de session
-
-Simon Giard-Leroux (12095680)
-"""
-
-# Importing all classes
 from classifiers.Ridge import Ridge
 from classifiers.SupportVectorMachine import SupportVectorMachine
 from classifiers.KNearestNeighbors import KNearestNeighbors
@@ -21,24 +10,144 @@ from utils.AccuracyChart import AccuracyChart
 from utils.FeatureChart import FeatureChart
 from utils.TSNE import t_SNE
 
-# Main Loop
-if __name__ == '__main__':      
+import numpy as np
+import warnings
+import sys
+import os
+
+if __name__ == '__main__':
+    # Disable scikitlearn warnings for ConvergenceWarning
+    # for multi-layer perceptron
+    # (cannot be disabled any either way)
+    if not sys.warnoptions:
+        warnings.simplefilter("ignore")
+        os.environ["PYTHONWARNINGS"] = "ignore"  
+        
     # Define test and validation sizes as floating point values
     test_size = 0.2
     valid_size = 0.2 # of 1 - test_size
     
+    # Set the following parameter to True to perform the
+    # hyperparameter range search, else set it to False to
+    # skip this part
+    search_hyperparam_range = True
+    
     # Load data from the data/train.csv file into the data_handler object
     data_handler = DataHandler('data/train.csv')
-    
-    # Display the chart showing the variance values for each feature
-    feature_chart = FeatureChart(data_handler.data)
-    feature_chart.display_chart()
-    
+        
     # Generate the raw X numpy array of features
     X = data_handler.X
     
     # Generate the raw y numpy array of labels grouped by species
     y = data_handler.get_y(data_handler.data.species)
+    
+    if search_hyperparam_range:
+        # Display that hyperparameter range search is being performed
+        print('=' * 40)
+        print('Hyperparameter Range Search')
+        print('=' * 40)
+        
+        # Find hyperparameters ranges to test for Ridge
+        ridge = Ridge()
+        
+        param = 'alpha'
+        scale = 'log'
+        param_grid = {param: np.logspace(-20, 20, 100)} 
+        param_grid_chosen = {param: [1e-8, 1e-7, 1e-6, 1e-5, 1e-4]}
+       
+        ridge.search_hyperparameters_range(X, y, valid_size, param, 
+                                           param_grid, scale, param_grid_chosen)
+        
+        # Find hyperparameters ranges to test for SVM
+        svm = SupportVectorMachine()
+        
+        param = 'C'
+        scale = 'log'
+        param_grid = {param: np.logspace(-20, 20, 100)} 
+        param_grid_chosen = {param: [1e2, 1e3, 1e4, 1e5, 1e6]}
+       
+        svm.search_hyperparameters_range(X, y, valid_size, param, 
+                                         param_grid, scale, param_grid_chosen)    
+        
+        param = 'gamma'
+        scale = 'log'
+        param_grid = {param: np.logspace(-20, 20, 100)} 
+        param_grid_chosen = {param: [2e-12, 2e-9, 3e-5, 0.1, 20]}
+       
+        svm.search_hyperparameters_range(X, y, valid_size, param, 
+                                         param_grid, scale, param_grid_chosen)       
+        
+        # Find hyperparameters ranges to test for KNearestNeighbors
+        knn = KNearestNeighbors()
+        
+        param = 'n_neighbors'
+        scale = 'linear'
+        param_grid = {param: np.arange(1, 100, 1)} 
+        param_grid_chosen = {param: [1, 2, 3, 4, 5]}
+       
+        knn.search_hyperparameters_range(X, y, valid_size, param, 
+                                         param_grid, scale, param_grid_chosen)    
+        
+        param = 'leaf_size'
+        scale = 'linear'
+        param_grid = {param: np.arange(10, 1000, 10)} 
+        param_grid_chosen = {param: [10, 20, 30, 40, 50]}
+       
+        knn.search_hyperparameters_range(X, y, valid_size, param, 
+                                         param_grid, scale, param_grid_chosen)       
+        
+        # Find hyperparameters ranges to test for MultiLayerPerceptron
+        mlp = MultiLayerPerceptron()
+        
+        param = 'hidden_layer_sizes'
+        scale = 'linear'
+        param_grid = {param: np.arange(10, 110, 10)} 
+        param_grid_chosen = {param: [(50,), (80,), (100,)]}
+       
+        mlp.search_hyperparameters_range(X, y, valid_size, param, 
+                                         param_grid, scale, param_grid_chosen)       
+        
+        param = 'learning_rate_init'
+        scale = 'log'
+        param_grid = {param: np.logspace(-20, 0, 20)} 
+        param_grid_chosen = {param: [1e-1, 1e-2, 1e-3]}
+       
+        mlp.search_hyperparameters_range(X, y, valid_size, param, 
+                                         param_grid, scale, param_grid_chosen)         
+        
+        # Find hyperparameters ranges to test for RandomForest
+        rf = RandomForest()
+        
+        param = 'n_estimators'
+        scale = 'linear'
+        param_grid = {param: np.arange(0, 550, 50)} 
+        param_grid_chosen = {param: [200, 350, 450]}
+       
+        rf.search_hyperparameters_range(X, y, valid_size, param, 
+                                        param_grid, scale, param_grid_chosen)       
+    
+        param = 'max_depth'
+        scale = 'linear'
+        param_grid = {param: np.arange(0, 105, 5)} 
+        param_grid_chosen = {param: [20, 25, 30, 35]}
+       
+        rf.search_hyperparameters_range(X, y, valid_size, param, 
+                                        param_grid, scale, param_grid_chosen)          
+        
+        # Find hyperparameters ranges to test for NaiveBayes
+        nb = NaiveBayes()
+        
+        param = 'var_smoothing'
+        scale = 'log'
+        param_grid = {param: np.logspace(-20, 20, 100)} 
+        param_grid_chosen = {param: [1e-8, 1e-6, 1e-4, 1e-2, 1e0, 1e2]}
+       
+        nb.search_hyperparameters_range(X, y, valid_size, param, 
+                                        param_grid, scale, param_grid_chosen)    
+        
+    # Display the chart showing the variance values for each feature
+    feature_chart = FeatureChart(data_handler.data)
+    feature_chart.display_chart()    
     
     # Generate the y numpy array of labels grouped by genera
     y_genera = data_handler.get_y(data_handler.data.genera)

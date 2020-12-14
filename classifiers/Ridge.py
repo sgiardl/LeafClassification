@@ -28,4 +28,4 @@ class Ridge(Classifier):
         
         super(Ridge, self).__init__()
         self.classifier = RidgeClassifier()
-        self.param_grid = {'alpha': [1e-1, 2e-1, 1e-2, 1e-3, 1e-4]}
+        self.param_grid = {'alpha': [1e-8, 1e-7, 1e-6, 1e-5, 1e-4]}

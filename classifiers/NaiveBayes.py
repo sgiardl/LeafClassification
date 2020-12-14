@@ -28,5 +28,5 @@ class NaiveBayes(Classifier):
         
         super(NaiveBayes, self).__init__()
         self.classifier = GaussianNB()
-        self.param_grid = {'var_smoothing': [1e-11, 1e-10, 1e-9, 1e-8, 1e-7, 1e-6, 1e-4, 1e-3]
+        self.param_grid = {'var_smoothing': [1e-8, 1e-6, 1e-4, 1e-2, 1e0, 1e2]
                           }
